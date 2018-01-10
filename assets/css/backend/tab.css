@@ -1,0 +1,45 @@
+.tab .tab-header{
+	width: 100%;
+	border-bottom: 1px rgba(98, 179, 255, 1) solid;
+	padding: 0px;
+	height: 38px;	
+}
+
+.tab .tab-header .tab-title{
+	margin: 0px;
+    color: rgba(107, 107, 107, 1);
+    border-color: rgba(98, 179, 255, 1);
+    border-style: solid;
+    text-decoration: none;
+    border-width: 1px;
+    text-align: center;
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 40px;
+    padding: 10px 30px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+	transition: all ease 0.25s;
+}
+
+.tab .tab-header .tab-title.active{
+	background-color: rgba(98, 179, 255, 1);
+    color: #FFFFFF;
+	
+}
+
+.tab .tab-header .tab-title:hover{
+    background-color: rgba(98, 179, 255, 1);
+    color: #FFFFFF;
+}
+
+.tab .tab-body .tab-page{
+	display:none;
+}
+
+.tab .tab-body .tab-page.active{
+	display:block;
+}
