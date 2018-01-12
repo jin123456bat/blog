@@ -11,6 +11,7 @@ use framework\core\http;
 <link rel="stylesheet" href="<?=assets::css('backend/main.css')?>" type="text/css" media="all" />
 <link rel="stylesheet" href="<?=assets::css('backend/tab.css')?>" type="text/css" media="all" />
 <link rel="stylesheet" href="<?=assets::css('backend/datatables.css')?>" type="text/css" media="all" />
+<link rel="stylesheet" href="<?=assets::css('font-awesome/css/font-awesome.min.css')?>" type="text/css" media="all" />
 <body>
 
 <?php include_once BACKEND.'common/header.php';?>
@@ -51,7 +52,11 @@ use framework\core\http;
 									</tr>
 								</thead>
 								<tbody></tbody>
-								<tfoot></tfoot>
+								<tfoot>
+									<tr>
+										<td id="split_page" colspan="8"></td>
+									</tr>
+								</tfoot>
 							</table>
 						</div>
 						<div class="tab-page" id="article_draft">
@@ -70,7 +75,11 @@ use framework\core\http;
 									</tr>
 								</thead>
 								<tbody></tbody>
-								<tfoot></tfoot>
+								<tfoot>
+									<tr>
+										<td id="split_page" colspan="8"></td>
+									</tr>
+								</tfoot>
 							</table>
 						</div>
 						<div class="tab-page" id="article_dustbin">
@@ -89,7 +98,11 @@ use framework\core\http;
 									</tr>
 								</thead>
 								<tbody></tbody>
-								<tfoot></tfoot>
+								<tfoot>
+									<tr>
+										<td id="split_page" colspan="8"></td>
+									</tr>
+								</tfoot>
 							</table>
 						</div>
 					</div>
@@ -121,6 +134,14 @@ tab.on('tab.click.article_publish',function(){
 }).on('tab.click.article_dustbin',function(){
 	dustbin.clearAjaxParameter();
 	dustbin.reload();
+});
+
+$('table').on('click','.look',function(){
+	var id = $(this).data('id');
+	window.open('<?=http::url('article','index')?>&id='+id);
+}).on('click','.edit',function(){
+	var id = $(this).data('id');
+	window.location = '<?=http::url('admin','artice_edit')?>&id='+id;
 });
 </script>
 </body>

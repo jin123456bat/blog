@@ -81,15 +81,15 @@ var dustbin = datatables({
 		
 	}
 });
-
+/*
 $('#all_search').on('submit',function(){
 	all.addAjaxParameter('status',$(this).find('select').val());
 	all.search($(this).find('input').val());
 	return false;
-});
+});*/
 
 //批量操作
-$('#all #multipleBtn').on('click',function(){
+/*$('#all #multipleBtn').on('click',function(){
 	var id = getSelectedCheckbox($('#all'));
 	if($('#all #multipleSelect').val() == '')
 	{
@@ -186,4 +186,4 @@ $('#all table').on('click','.look',function(){
 		}
 	});
 	return false;
-});
+});*/

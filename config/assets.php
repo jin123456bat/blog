@@ -17,18 +17,25 @@ return array(
 		//css的路径
 		'path' => array(
 			'./assets/css'
+		),
+		
+		'mapping' => array(
+			'tagsinput' => 'https://cdn.bootcss.com/jquery-tagsinput/1.3.6/jquery.tagsinput.min.css',
 		)
 	),
 	'js' => array(
 		//js文件的路径
 		'path' => array(
 			'./assets/js',
+			'./assets/ueditor',
 		),
 		
 		//映射 可以在这里配置一些cdn之类的   当然映射的优先级要比path的优先级要低
 		'mapping' => array(
 			'jquery' => 'https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js',
 			'jquery-validate' => 'https://cdn.bootcss.com/jquery-validate/1.17.0/jquery.validate.min.js',
+			
+			'tagsinput' => 'https://cdn.bootcss.com/jquery-tagsinput/1.3.6/jquery.tagsinput.min.js',
 		)
 	),
 	'image' => array(

@@ -199,7 +199,7 @@ var datatables = function(argments){
 		var tpl = '总计'+total+'个纪录，分'+pagenum+'页 |  '
 											+'每页 <input id="set_pagesize" type="text" value="'+$_pagesize+'" style="width: 34px; height: 22px; outline: none;"> | '
 											+'<i id="first_page" class="fa fa-step-backward" style="margin: 0px 5px;"></i>'
-											+'<i id="prev_page" class="fa fa-play rotate-180" style="margin: 0px 5px;"></i>'
+											+'<i id="prev_page" class="fa fa-play" style="margin: 0px 5px;transform: rotate(180deg);"></i>'
 											+'<select id="set_page" style="width: 36px; height: 22px; margin: 0px 5px;">'+str+'</select>'
 											+'<i id="next_page" class="fa fa-play" style="margin: 0px 5px;"></i>'
 											+'<i id="last_page" class="fa fa-step-forward" style="margin: 0px 5px;"></i>';

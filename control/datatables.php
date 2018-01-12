@@ -14,7 +14,7 @@ class datatables extends control
 		$length = request::post('length',10,null,'i');
 		
 		$columns = request::post('columns',array(),null,'a');
-		$articleModel = $this->model('article')->limit($start,$length);
+		$articleModel = $this->model('article');
 		$select = array();
 		foreach ($columns as $column)
 		{
@@ -27,7 +27,7 @@ class datatables extends control
 		$articleModel->keepCondition();
 		$count = $articleModel->count();
 		
-		$data = $articleModel->select($select);
+		$data = $articleModel->limit($start,$length)->select($select);
 		
 		return new json(array(
 			'draw' => request::post('draw',0,null,'i'),

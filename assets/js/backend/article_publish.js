@@ -83,14 +83,14 @@ var publish = datatables({
 	}
 });
 
-$('#all_search').on('submit',function(){
+/*$('#all_search').on('submit',function(){
 	all.addAjaxParameter('status',$(this).find('select').val());
 	all.search($(this).find('input').val());
 	return false;
-});
+});*/
 
 //批量操作
-$('#all #multipleBtn').on('click',function(){
+/*$('#all #multipleBtn').on('click',function(){
 	var id = getSelectedCheckbox($('#all'));
 	if($('#all #multipleSelect').val() == '')
 	{
@@ -146,9 +146,9 @@ $('#all #multipleBtn').on('click',function(){
 		});
 	}
 	return false;
-});
+});*/
 
-$('#all table').on('click','.look',function(){
+/*$('#article_publish table').on('click','.look',function(){
 	window.open('./index.php?c=index&a=product&id='+$(this).data('id'));
 	return false;
 }).on('click','.edit',function(){
@@ -187,4 +187,4 @@ $('#all table').on('click','.look',function(){
 		}
 	});
 	return false;
-});
+});*/

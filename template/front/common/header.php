@@ -14,7 +14,7 @@ use framework\core\assets;
 			</div>
 			
 			<ul class="pull-down">
-				<li><a href="<?=http::url('admin','article')?>">文章</a></li>
+				<li><a href="<?=http::url('admin','article_create')?>">文章</a></li>
 			</ul>
 			
 		</div>

@@ -8,7 +8,7 @@ class article extends control
 {
 	function index()
 	{
-		$id = request::get('id',0,'intval','i');
+		$id = request::get('id');
 		
 		$article = $this->model('article')->where(array(
 			'id'=>$id,

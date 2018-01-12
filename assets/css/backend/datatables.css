@@ -28,3 +28,11 @@
 	display: table-cell;
 	font-size: 12px;
 }
+
+.table tfoot td{
+	border-top: 1px solid #ddd;
+	padding:10px;
+	font-size:13px;
+	text-align: right;
+	line-height: 1.42857143;
+}

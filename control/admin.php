@@ -10,6 +10,8 @@ use framework\core\response;
 use framework\core\response\url;
 use framework\core\response\json;
 use blog\extend\webUser;
+use blog\entity\article;
+use framework\core\response\message;
 
 class admin extends control
 {
@@ -106,10 +108,35 @@ class admin extends control
 		}
 	}
 
+	/**
+	 * 后台首页
+	 * @return \framework\core\response\url
+	 */
 	function index()
 	{
 		//跳转到一个默认的页面
 		return new url('admin','article_list');
+	}
+	
+	/**
+	 * 编辑文章
+	 * @return \framework\core\view
+	 */
+	function article_edit()
+	{
+		if (request::method() == 'post')
+		{
+			
+		}
+		else
+		{
+			$view = new view('admin/article_create.php','backend');
+			
+			$category = $this->model('category')->order('sort','asc')->select();
+			$view->assign('category', $category);
+			
+			return $view;
+		}
 	}
 	
 	/**
@@ -118,8 +145,45 @@ class admin extends control
 	 */
 	function article_create()
 	{
-		$view = new view('admin/index.php','backend');
-		return $view;
+		if (request::method() == 'post')
+		{
+			$data = array(
+				'title' => request::post('title','',null,'s'),
+				'content' => request::post('content','',null,'s'),
+				'uid' => webUser::getLastVerified()['id'],
+				'uname' => webUser::getLastVerified()['username'],
+				'publish' => request::post('publish',0,null,'i'),
+				'tags' => request::post('tags','[]',null,'s'),
+				'category' => request::post('category',array(),null,'a'),
+			);
+			$article = new article($data);
+			if ($article->validate())
+			{
+				if($article->save())
+				{
+					return new url('admin','article_edit',array(
+						'id' => $article->id
+					));
+				}
+				else
+				{
+					return new message('添加失败',http::url('admin','article_create'),3);
+				}
+			}
+			else
+			{
+				return new message(current($article->getError()),http::url('admin','article_create'),3);
+			}
+		}
+		else
+		{
+			$view = new view('admin/article_create.php','backend');
+			
+			$category = $this->model('category')->order('sort','asc')->select();
+			$view->assign('category', $category);
+		
+			return $view;
+		}
 	}
 	
 	/**
@@ -137,18 +201,30 @@ class admin extends control
 			array(
 				'deny',
 				'actions' => array(
-					'index'
+					'article_edit',
+					'article_create',
+					'article_list',
+					'index',
 				),
 				'express' => empty(webUser::getLastVerified()),
-				'location' => http::url('admin', 'login')
+				'message' => new url('admin','login'),
 			),
 			array(
 				'deny',
 				'actions' => array(
 					'login',
-					'register'
+					'register',
 				),
 				'express' => request::method() == 'post' && !csrf::verify(request::header(str_replace('-', '_',csrf::$_X_CSRF_TOKEN_NAME))),
+				'message' => new response('请重新提交请求',403),
+			),
+			array(
+				'deny',
+				'actions' => array(
+					'article_create',
+					'article_edit',
+				),
+				'express' => request::method() == 'post' && !csrf::verify(request::post(csrf::$_X_CSRF_TOKEN_NAME)),
 				'message' => new response('请重新提交请求',403),
 			)
 		);
