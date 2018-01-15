@@ -126,11 +126,51 @@ class admin extends control
 	{
 		if (request::method() == 'post')
 		{
-			
+			$data = array(
+				'id' => request::post('id'),
+				'title' => request::post('title'),
+				'content' => request::post('content'),
+				'publish' => request::post('publish',0,null,'i'),
+			);
+			$article = new article($data);
+			if ($article->validate())
+			{
+				if($article->save())
+				{
+					return new url('admin','article_edit',array(
+						'id' => $article->id,
+					));
+				}
+				else
+				{
+					return new message('更新失败',http::url('admin','article_edit'),3);
+				}
+			}
+			else
+			{
+				return new message(current($article->getError()),http::url('admin','article_edit'),3);
+			}
 		}
 		else
 		{
-			$view = new view('admin/article_create.php','backend');
+			$id = request::get('id');
+			
+			$article = $this->model('article')
+			->leftJoin('article_category', 'article_category.aid=article.id')
+			->leftJoin('tags', 'tags.aid=article.id')
+			->where(array(
+				'article.id' => $id
+			))
+			->group('article.id')
+			->find(array(
+				'article.*',
+				'article_category'=>'GROUP_CONCAT(article_category.cid)',
+				'tags' => 'GROUP_CONCAT(tags.content)'
+			));
+			
+			$view = new view('admin/article_edit.php','backend');
+			
+			$view->assign('article', $article);
 			
 			$category = $this->model('category')->order('sort','asc')->select();
 			$view->assign('category', $category);
@@ -187,6 +227,87 @@ class admin extends control
 	}
 	
 	/**
+	 * 文章状态更改
+	 * @return \framework\core\response\json
+	 */
+	function article_update()
+	{
+		$id = request::post('id');
+		$publish = request::post('publish',null,null,'0,1');
+		
+		if ($publish !== null)
+		{
+			if($this->model('article')->where(array(
+				'id'=>$id
+			))->update('publish',$publish))
+			{
+				return new json(array(
+					'code'=>1,
+					'message'=>'修改成功',
+				));
+			}
+			else
+			{
+				return new json(array(
+					'code'=>0,
+					'message'=>'修改失败'
+				));
+			}
+		}
+		
+		$delete = request::post('delete',null,null,'1,0');
+		if ($delete !== null)
+		{
+			if($this->model('article')->where(array(
+				'id'=>$id
+			))->update(array(
+				'isdelete'=>$delete,
+				'deletetime' => date('Y-m-d H:i:s'),
+			)))
+			{
+				return new json(array(
+					'code'=>1,
+					'message'=>$delete==1?'删除成功':'恢复成功',
+				));
+			}
+			else
+			{
+				return new json(array(
+					'code'=>0,
+					'message'=>$delete==1?'删除失败':'恢复失败',
+				));
+			}
+		}
+	}
+	
+	/**
+	 * 永久删除文章
+	 */
+	function article_delete()
+	{
+		$id = request::post('id');
+		$article = $this->model('article')->where(array(
+			'id' => $id
+		))->find();
+		
+		$article = new article($article);
+		if($article->delete())
+		{
+			return new json(array(
+				'code'=>1,
+				'message'=>'删除成功',
+			));
+		}
+		else
+		{
+			return new json(array(
+				'code'=>0,
+				'message'=>'删除失败',
+			));
+		}
+	}
+	
+	/**
 	 * 文章管理页面
 	 */
 	function article_list()
@@ -201,9 +322,11 @@ class admin extends control
 			array(
 				'deny',
 				'actions' => array(
+					'article_update',
 					'article_edit',
 					'article_create',
 					'article_list',
+					'article_delete',
 					'index',
 				),
 				'express' => empty(webUser::getLastVerified()),
@@ -214,6 +337,8 @@ class admin extends control
 				'actions' => array(
 					'login',
 					'register',
+					'article_update',
+					'article_delete'
 				),
 				'express' => request::method() == 'post' && !csrf::verify(request::header(str_replace('-', '_',csrf::$_X_CSRF_TOKEN_NAME))),
 				'message' => new response('请重新提交请求',403),

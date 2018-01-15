@@ -29,6 +29,9 @@ var draft = datatables({
 		data:'category',
 		name:'(SELECT GROUP_CONCAT(name) FROM `article_category` left join category on category.id=cid where aid=article.id)',
 	},{
+		data:'tags',
+		name:'(select GROUP_CONCAT(content) from tags where aid=article.id)'
+	},{
 		data:'id',
 		name:'article.id',
 	}],
@@ -54,6 +57,15 @@ var draft = datatables({
 	},{
 		targets:7,
 		render:function(data,full){
+			if(data==null)
+			{
+				return '';
+			}
+			return data;
+		}
+	},{
+		targets:8,
+		render:function(data,full){
 			content = '';
 			content += '<a class="button button-xs look" data-id="'+full.id+'">查看</a>';
 			content += '<a class="button button-xs edit" data-id="'+full.id+'">编辑</a>';
@@ -72,7 +84,7 @@ var draft = datatables({
 			}
 			else
 			{
-				content += '<a class="button button-xs delete" data-id="'+full.id+'">删除</a>';
+				content += '<a class="button button-xs remove" data-id="'+full.id+'">删除</a>';
 			}
 			return content;
 		}

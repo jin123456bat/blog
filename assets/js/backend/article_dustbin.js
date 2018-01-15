@@ -28,6 +28,9 @@ var dustbin = datatables({
 		data:'category',
 		name:'(SELECT GROUP_CONCAT(name) FROM `article_category` left join category on category.id=cid where aid=article.id)',
 	},{
+		data:'tags',
+		name:'(select GROUP_CONCAT(content) from tags where aid=article.id)'
+	},{
 		data:'id',
 		name:'article.id',
 	}],
@@ -53,26 +56,19 @@ var dustbin = datatables({
 	},{
 		targets:7,
 		render:function(data,full){
+			if(data==null)
+			{
+				return '';
+			}
+			return data;
+		}
+	},{
+		targets:8,
+		render:function(data,full){
 			content = '';
 			content += '<a class="button button-xs look" data-id="'+full.id+'">查看</a>';
-			content += '<a class="button button-xs edit" data-id="'+full.id+'">编辑</a>';
-			if(full.publish==1)
-			{
-				content += '<a class="button button-xs draft" data-id="'+full.id+'">草稿</a>';
-			}
-			else
-			{
-				content += '<a class="button button-xs publish" data-id="'+full.id+'">发布</a>';
-			}
-			
-			if(full.isdelete==1)
-			{
-				content += '<a class="button button-xs refree" data-id="'+full.id+'">还原</a>';
-			}
-			else
-			{
-				content += '<a class="button button-xs delete" data-id="'+full.id+'">删除</a>';
-			}
+			content += '<a class="button button-xs recovery" data-id="'+full.id+'">恢复</a>';
+			content += '<a style="color:red;" class="button button-xs delete" data-id="'+full.id+'">永久删除</a>';
 			return content;
 		}
 	}],

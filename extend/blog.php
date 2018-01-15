@@ -20,7 +20,9 @@ class blog extends application
 			
 			if (in_array($control, array('admin'),true) && !in_array($action, array('login','register')))
 			{
-				$menu = $this->model('menu')->where('sup_menu_id is null')->order('sort','asc')->select();
+				$menu = $this->model('menu')->where('sup_menu_id is null')->where(array(
+					'shown'=>1,
+				))->order('sort','asc')->select();
 				
 				$current = $this->model('menu')->where(array(
 					'link' => $control.'/'.$action
@@ -33,13 +35,15 @@ class blog extends application
 				))->limit(1)->find();
 				
 				$menu1 = $this->model('menu')->where(array(
-					'sup_menu_id' => $current_sup['sup_menu_id']
+					'sup_menu_id' => $current_sup['sup_menu_id'],
+					'shown'=>1,
 				))->order('sort','asc')->select();
 				
 				$response->assign('menu_sup', $current_sup);
 				
 				$menu2 = $this->model('menu')->where(array(
-					'sup_menu_id' => $current['sup_menu_id']
+					'sup_menu_id' => $current['sup_menu_id'],
+					'shown'=>1,
 				))->order('sort','asc')->select();
 				
 				foreach ($menu2 as &$m)

@@ -1,6 +1,7 @@
 <?php
 use framework\core\assets;
 use framework\core\http;
+use framework\vendor\csrf;
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,6 +12,7 @@ use framework\core\http;
 <link rel="stylesheet" href="<?=assets::css('backend/main.css')?>" type="text/css" media="all" />
 <link rel="stylesheet" href="<?=assets::css('backend/tab.css')?>" type="text/css" media="all" />
 <link rel="stylesheet" href="<?=assets::css('backend/datatables.css')?>" type="text/css" media="all" />
+<link rel="stylesheet" href="<?=assets::css('spop.min.css')?>" type="text/css" media="all" />
 <link rel="stylesheet" href="<?=assets::css('font-awesome/css/font-awesome.min.css')?>" type="text/css" media="all" />
 <body>
 
@@ -48,13 +50,14 @@ use framework\core\http;
 										<th>发布状态</th>
 										<th>浏览次数</th>
 										<th>所属分类</th>
+										<th>标签</th>
 										<th width="300px">操作</th>
 									</tr>
 								</thead>
 								<tbody></tbody>
 								<tfoot>
 									<tr>
-										<td id="split_page" colspan="8"></td>
+										<td id="split_page" colspan="10"></td>
 									</tr>
 								</tfoot>
 							</table>
@@ -71,13 +74,14 @@ use framework\core\http;
 										<th>发布状态</th>
 										<th>浏览次数</th>
 										<th>所属分类</th>
+										<th>标签</th>
 										<th width="300px">操作</th>
 									</tr>
 								</thead>
 								<tbody></tbody>
 								<tfoot>
 									<tr>
-										<td id="split_page" colspan="8"></td>
+										<td id="split_page" colspan="10"></td>
 									</tr>
 								</tfoot>
 							</table>
@@ -94,13 +98,20 @@ use framework\core\http;
 										<th>发布状态</th>
 										<th>浏览次数</th>
 										<th>所属分类</th>
+										<th>标签</th>
 										<th width="300px">操作</th>
 									</tr>
 								</thead>
 								<tbody></tbody>
 								<tfoot>
 									<tr>
-										<td id="split_page" colspan="8"></td>
+										<td colspan="5">
+											<select class="form-control">
+												<option>恢复</option>
+												<option>永久删除</option>
+											</select>
+										</td>
+										<td id="split_page" colspan="5"></td>
 									</tr>
 								</tfoot>
 							</table>
@@ -123,6 +134,7 @@ use framework\core\http;
 <script type="text/javascript" src="<?=assets::js('backend/article_draft.js')?>"></script>
 <script type="text/javascript" src="<?=assets::js('backend/article_dustbin.js')?>"></script>
 <script type="text/javascript" src="<?=assets::js('tab.js')?>"></script>
+<script type="text/javascript" src="<?=assets::js('spop.min.js')?>"></script>
 <script type="text/javascript" src="<?=assets::js('global.js')?>"></script>
 <script type="text/javascript">
 tab.on('tab.click.article_publish',function(){
@@ -136,12 +148,102 @@ tab.on('tab.click.article_publish',function(){
 	dustbin.reload();
 });
 
+$.ajaxSetup({
+	headers: {
+        '<?=csrf::$_X_CSRF_TOKEN_NAME?>': '<?=csrf::token()?>' ,
+    } ,
+});
+
+$('.all_checked').on('click',function(){
+	$(this).parents('table').find('tbody input[type=checkbox]').prop('checked',$(this).is(':checked'));
+});
+
 $('table').on('click','.look',function(){
 	var id = $(this).data('id');
 	window.open('<?=http::url('article','index')?>&id='+id);
 }).on('click','.edit',function(){
 	var id = $(this).data('id');
-	window.location = '<?=http::url('admin','artice_edit')?>&id='+id;
+	window.location = '<?=http::url('admin','article_edit')?>&id='+id;
+}).on('click','.publish',function(){
+	$.post('<?=http::url('admin','article_update')?>',{id:$(this).data('id'),publish:1},function(response){
+		if(response.code==1)
+		{
+			draft.reload();
+		}
+		spop({
+		    template: response.message,
+		    style: response.code==1?'success':'error',
+		    autoclose: 3000,
+		    position:'bottom-right',
+		    icon:true,
+		    group:false,
+		});
+	});
+}).on('click','.draft',function(){
+	$.post('<?=http::url('admin','article_update')?>',{id:$(this).data('id'),publish:0},function(response){
+		if(response.code==1)
+		{
+			publish.reload();
+		}
+		spop({
+		    template: response.message,
+		    style: response.code==1?'success':'error',
+		    autoclose: 3000,
+		    position:'bottom-right',
+		    icon:true,
+		    group:false,
+		});
+	});
+}).on('click','.remove',function(){
+	var btn = $(this);
+	$.post('<?=http::url('admin','article_update')?>',{id:$(this).data('id'),delete:1},function(response){
+		if(response.code==1)
+		{
+			switch(btn.parents('.tab-page').attr('id'))
+			{
+				case 'article_publish':publish.reload();break;
+				case 'article_draft':draft.reload();break;
+			}
+		}
+		spop({
+		    template: response.message,
+		    style: response.code==1?'success':'error',
+		    autoclose: 3000,
+		    position:'bottom-right',
+		    icon:true,
+		    group:false,
+		});
+	});
+}).on('click','.recovery',function(){
+	$.post('<?=http::url('admin','article_update')?>',{id:$(this).data('id'),delete:0},function(response){
+		if(response.code==1)
+		{
+			dustbin.reload();
+		}
+		spop({
+		    template: response.message,
+		    style: response.code==1?'success':'error',
+		    autoclose: 3000,
+		    position:'bottom-right',
+		    icon:true,
+		    group:false,
+		});
+	});
+}).on('click','.delete',function(){
+	$.post('<?=http::url('admin','article_delete')?>',{id:$(this).data('id')},function(response){
+		if(response.code==1)
+		{
+			dustbin.reload();
+		}
+		spop({
+		    template: response.message,
+		    style: response.code==1?'success':'error',
+		    autoclose: 3000,
+		    position:'bottom-right',
+		    icon:true,
+		    group:false,
+		});
+	});
 });
 </script>
 </body>
