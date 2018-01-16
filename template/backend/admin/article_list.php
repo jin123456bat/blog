@@ -10,6 +10,7 @@ use framework\vendor\csrf;
 <title><?=$setting['site_title']?> | 后台管理系统</title>
 </head>
 <link rel="stylesheet" href="<?=assets::css('backend/main.css')?>" type="text/css" media="all" />
+<link rel="stylesheet" href="<?=assets::css('backend/admin/article_list.css')?>" type="text/css" media="all" />
 <link rel="stylesheet" href="<?=assets::css('backend/tab.css')?>" type="text/css" media="all" />
 <link rel="stylesheet" href="<?=assets::css('backend/datatables.css')?>" type="text/css" media="all" />
 <link rel="stylesheet" href="<?=assets::css('spop.min.css')?>" type="text/css" media="all" />
@@ -57,6 +58,13 @@ use framework\vendor\csrf;
 								<tbody></tbody>
 								<tfoot>
 									<tr>
+										<td colspan="2">
+											<select class="form-control multi_do">
+												<option value="">请选择</option>
+												<option value="draft">草稿</option>
+												<option value="remove">删除</option>
+											</select>
+										</td>
 										<td id="split_page" colspan="10"></td>
 									</tr>
 								</tfoot>
@@ -81,7 +89,14 @@ use framework\vendor\csrf;
 								<tbody></tbody>
 								<tfoot>
 									<tr>
-										<td id="split_page" colspan="10"></td>
+										<td colspan="2">
+											<select class="form-control multi_do">
+												<option value="">请选择</option>
+												<option value="publish">发布</option>
+												<option value="remove">删除</option>
+											</select>
+										</td>
+										<td id="split_page" colspan="8"></td>
 									</tr>
 								</tfoot>
 							</table>
@@ -105,13 +120,14 @@ use framework\vendor\csrf;
 								<tbody></tbody>
 								<tfoot>
 									<tr>
-										<td colspan="5">
-											<select class="form-control">
-												<option>恢复</option>
-												<option>永久删除</option>
+										<td colspan="2">
+											<select class="form-control multi_do">
+												<option value="">请选择</option>
+												<option value="recovery">恢复</option>
+												<option value="delete">永久删除</option>
 											</select>
 										</td>
-										<td id="split_page" colspan="5"></td>
+										<td id="split_page" colspan="8"></td>
 									</tr>
 								</tfoot>
 							</table>
@@ -243,6 +259,91 @@ $('table').on('click','.look',function(){
 		    icon:true,
 		    group:false,
 		});
+	});
+}).on('change','.multi_do',function(){
+	var select = $(this);
+	var table = $(this).parents('table');
+	var id = [];
+	$(this).parents('table').find('tbody input[type=checkbox]:checked').each(function(index,value){
+		id.push($(value).val());
+	});
+	
+	if(id.length==0)
+	{
+		spop({
+		    template: '请选择文章',
+		    style: 'error',
+		    autoclose: 3000,
+		    position:'bottom-right',
+		    icon:true,
+		    group:false,
+		});
+		select.val('');
+		return false;
+	}
+	switch(select.val())
+	{
+		case 'delete':
+			url = '<?=http::url('admin','article_delete')?>';
+			data = {
+				id:id,
+			};
+		break;
+		case 'recovery':
+			url = '<?=http::url('admin','article_update')?>';
+			data = {
+				id:id,
+				delete:0,
+			};
+		break;
+		case 'draft':
+			url = '<?=http::url('admin','article_update')?>';
+			data = {
+				id:id,
+				publish:0,
+			};
+		break;
+		case 'publish':
+			url = '<?=http::url('admin','article_update')?>';
+			data = {
+				id:id,
+				publish:1,
+			};
+		break;
+		case 'remove':
+			url = '<?=http::url('admin','article_update')?>';
+			data = {
+				id:id,
+				delete:1,
+			};
+		break;
+		default:
+			spop({
+			    template: '请选择操作',
+			    style: 'error',
+			    autoclose: 3000,
+			    position:'bottom-right',
+			    icon:true,
+			    group:false,
+			});
+			select.val('');
+			return false;
+	}
+	select.val('');
+	$.post(url,data,function(response){
+		if(response.code==1)
+		{
+			table.trigger('flush');
+		}
+		spop({
+		    template: response.message,
+		    style: response.code==1?'success':'error',
+		    autoclose: 3000,
+		    position:'bottom-right',
+		    icon:true,
+		    group:false,
+		});
+		
 	});
 });
 </script>

@@ -257,6 +257,10 @@ var datatables = function(argments){
 	};
 
 	load(0,$_pagesize);
+	
+	$(argments.table).on('flush',function(){
+		load($_start,$_length);
+	});
 
 	return {
 		search:function(keyword){

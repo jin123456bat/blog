@@ -286,13 +286,25 @@ class admin extends control
 	function article_delete()
 	{
 		$id = request::post('id');
-		$article = $this->model('article')->where(array(
-			'id' => $id
-		))->find();
-		
-		$article = new article($article);
-		if($article->delete())
+		if (is_array($id))
 		{
+			$article = $this->model('article')->where(array(
+				'id' => $id
+			))->select();
+			$this->model('article')->transaction();
+			foreach ($article as $data)
+			{
+				$article = new article($data);
+				if(!$article->delete())
+				{
+					$this->model('article')->rollback();
+					return new json(array(
+						'code'=>0,
+						'message'=>'删除失败,请重试',
+					));
+				}
+			}
+			$this->model('article')->commit();
 			return new json(array(
 				'code'=>1,
 				'message'=>'删除成功',
@@ -300,10 +312,24 @@ class admin extends control
 		}
 		else
 		{
-			return new json(array(
-				'code'=>0,
-				'message'=>'删除失败',
-			));
+			$article = $this->model('article')->where(array(
+				'id' => $id
+			))->find();
+			$article = new article($article);
+			if($article->delete())
+			{
+				return new json(array(
+					'code'=>1,
+					'message'=>'删除成功',
+				));
+			}
+			else
+			{
+				return new json(array(
+					'code'=>0,
+					'message'=>'删除失败',
+				));
+			}
 		}
 	}
 	
