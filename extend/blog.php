@@ -16,6 +16,21 @@ class blog extends application
 				//加载前台分类
 				$category = $this->model('category')->order('sort','asc')->select();
 				$response->assign('category', $category);
+				
+				//加载文章标签
+				$tags = $this->model('tags')->group('content')->order('num','desc')->select(array(
+					'content',
+					'num'=>'count(*)',
+				));
+				$response->assign('tags', $tags);
+				
+				//归档
+				$archive = $this->model('article')
+				->group('createtime')->order('createtime','desc')->select(array(
+					'createtime'=>'DATE_FORMAT(createtime,"%Y-%m-%d")',
+					'num' => 'count(*)',
+				));
+				$response->assign('archives', $archive);
 			}
 			
 			if (in_array($control, array('admin'),true) && !in_array($action, array('login','register')))

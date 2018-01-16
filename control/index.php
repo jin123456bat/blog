@@ -11,6 +11,10 @@ class index extends control
 	function index()
 	{
 		$article = $this->model('article')
+		->where(array(
+			'publish'=>1,
+			'isdelete'=>0,
+		))
 		->order('article.sort','asc')
 		->select();
 		
@@ -29,6 +33,12 @@ class index extends control
 		$view = new view('index/index.php');
 		
 		$view->assign('article', $article);
+		return $view;
+	}
+	
+	function __404()
+	{
+		$view = new view('common/404.php');
 		return $view;
 	}
 }

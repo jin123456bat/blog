@@ -12,7 +12,7 @@ return array(
 		'server' => 'localhost',
 		'dbname' => 'blog',
 		'user' => 'root',
-		'password' => '',
+		'password' => $_SERVER['HTTP_HOST'] == 'localhost'?'':'jin2164389',
 		'charset' => 'utf8'
 	)
 );

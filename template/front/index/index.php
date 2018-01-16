@@ -18,6 +18,7 @@ use framework\vendor\csrf;
 
 <div class="container">
 	<div class="article">
+		<?php if (!empty($article)){?>
 		<?php foreach ($article as $a){?>
 		<div class="item">
 			<div class="title"><a href="<?=http::url('article','index',array('id'=>$a['id']))?>"><?=$a['title']?></a></div>
@@ -47,6 +48,9 @@ use framework\vendor\csrf;
 				<a href="<?=http::url('article','index',array('id'=>$a['id']))?>">阅读全文</a>
 			</div>
 		</div>
+		<?php }?>
+		<?php }else{?>
+		<iframe style="margin-top:30px;width: 100%;height: 700px;" scrolling='no' frameborder='0' src='http://blog.techer.top/index.php?c=index&a=__404'></iframe>
 		<?php }?>
 	</div>
 	

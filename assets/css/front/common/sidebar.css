@@ -13,7 +13,7 @@
     box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.15);
 }
 
-.container .sidebar .item .search input{
+.container .sidebar .item .search-sidebar input{
 	height: 30px;
     line-height: 30px;
     font-size: 14px;
@@ -26,11 +26,11 @@
 	float: left;
 }
 
-.container .sidebar .item .search input:focus{
+.container .sidebar .item .search-sidebar input:focus{
     border-color: #be5000;
 }
 
-.container .sidebar .item .search button{
+.container .sidebar .item .search-sidebar button{
 	height: 34px;
     width: 34px;
     display: inline-block;

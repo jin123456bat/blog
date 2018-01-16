@@ -294,6 +294,8 @@ class admin extends control
 			$this->model('article')->transaction();
 			foreach ($article as $data)
 			{
+				$data['category'] = array();//删除category关联表中的数据
+				$data['tags'] = '[]';//删除category关联表中的数据
 				$article = new article($data);
 				if(!$article->delete())
 				{
@@ -315,6 +317,8 @@ class admin extends control
 			$article = $this->model('article')->where(array(
 				'id' => $id
 			))->find();
+			$article['category'] = array();//删除category关联表中的数据
+			$article['tags'] = '[]';//删除category关联表中的数据
 			$article = new article($article);
 			if($article->delete())
 			{
