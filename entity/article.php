@@ -15,6 +15,10 @@ class article extends entity
 	 */
 	static function getDescription($content)
 	{
+		//去掉文章中的代码段
+		$pattern = '/<pre class="brush:php[^"]*">[\s\S]*<\/pre>/mUi';
+		$content = preg_replace($pattern, '', $content);
+		
 		return mb_strimwidth($content, 0, 1000, '...');
 	}
 	
