@@ -1,6 +1,7 @@
 <?php
 use framework\core\http;
 use framework\core\assets;
+use framework\core\application;
 ?>
 <link rel="stylesheet" href="<?=assets::css('front/common/header.css')?>" type="text/css" media="all" />
 
@@ -18,8 +19,18 @@ use framework\core\assets;
 			</ul>
 			
 		</div>
+		<?php if (application::$_control == 'article' && application::$_action == 'index'){?>
 		<div class="item">
-			<i class="iconfont icon-message01"></i>
+			<a class="label" target="_blank" href="<?=http::url('admin','article_edit',array(
+				'id' => $_GET['id']
+			))?>">
+			<i class="iconfont icon-edit"></i>
+			编辑
+			</a>
+		</div>
+		<?php }?>
+		<div class="item">
+			<i class="iconfont icon-message"></i>
 			<span class="label">消息</span>
 		</div>
 	</div>

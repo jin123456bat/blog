@@ -24,6 +24,11 @@
 	font-size:14px;
 }
 
+.user-toolbar .item .label{
+	color: #fff;
+    text-decoration: none;
+}
+
 .pull-down-group{
 	display:inline-block;
 	position:relative;

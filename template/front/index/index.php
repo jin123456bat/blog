@@ -24,11 +24,11 @@ use framework\vendor\csrf;
 			<div class="title"><a href="<?=http::url('article','index',array('id'=>$a['id']))?>"><?=$a['title']?></a></div>
 			<div class="info">
 				<div class="info-item">
-					<i class="iconfont icon-riqifuzhi"></i>
+					<i class="iconfont icon-riliriqi2"></i>
 					<?=date('Y年m月d日',strtotime($a['createtime']))?>
 				</div>
 				<div class="info-item">
-					<i class="iconfont icon-ionc--"></i>
+					<i class="iconfont icon-person-fill"></i>
 					<?=$a['uname']?>
 				</div>
 				<div class="info-item">

@@ -22,11 +22,11 @@ use framework\core\http;
 			<div class="title"><a href="<?=http::url('article','index',array('id'=>$article['id']))?>"><?=$article['title']?></a></div>
 			<div class="info">
 				<div class="info-item">
-					<i class="iconfont icon-riqifuzhi"></i>
+					<i class="iconfont icon-riliriqi2"></i>
 					<?=date('Y年m月d日',strtotime($article['createtime']))?>
 				</div>
 				<div class="info-item">
-					<i class="iconfont icon-ionc--"></i>
+					<i class="iconfont icon-person-fill"></i>
 					<?=$article['uname']?>
 				</div>
 				<div class="info-item">

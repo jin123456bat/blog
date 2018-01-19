@@ -75,6 +75,9 @@ use framework\vendor\csrf;
 				<?php if ($article['publish']==0){?>
 				<button type="submit" class="button" onClick="$('input[name=publish]').val(1);">发布</button>
 				<?php }?>
+				<a class="button" target="_blank" href="<?=http::url('article','index',array(
+					'id' => $article['id']
+				))?>">预览</a>
 			</div>
 			</form>
 		</div>
