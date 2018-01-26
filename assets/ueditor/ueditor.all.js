@@ -9995,7 +9995,7 @@ UE.plugins['defaultfilter'] = function () {
                     return;
                 }
                 switch (node.tagName) {
-                    case 'style':
+                    /*case 'style':
                     case 'script':
                         node.setAttr({
                             cdata_tag: node.tagName,
@@ -10004,7 +10004,7 @@ UE.plugins['defaultfilter'] = function () {
                         });
                         node.tagName = 'div';
                         node.innerHTML('');
-                        break;
+                        break;*/
                     case 'a':
                         if (val = node.getAttr('href')) {
                             node.setAttr('_href', val)
@@ -17554,7 +17554,7 @@ UE.plugins['autofloat'] = function() {
             }
             if(toolbarBox.style.position != 'fixed'){
                 toolbarBox.style.position = 'fixed';
-                toolbarBox.style.top = topOffset +"px";
+                toolbarBox.style.top =  topOffset+"px";
                 ((origalFloat == 'absolute' || origalFloat == 'relative') && parseFloat(origalLeft)) && (toolbarBox.style.left = toobarBoxPos.x + 'px');
             }
         }
