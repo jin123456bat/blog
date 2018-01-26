@@ -36,6 +36,7 @@ return array(
 			'jquery-validate' => 'https://cdn.bootcss.com/jquery-validate/1.17.0/jquery.validate.min.js',
 			
 			'tagsinput' => 'https://cdn.bootcss.com/jquery-tagsinput/1.3.6/jquery.tagsinput.min.js',
+			'ckeditor' => 'https://cdn.ckeditor.com/4.8.0/full/ckeditor.js',
 		)
 	),
 	'image' => array(
