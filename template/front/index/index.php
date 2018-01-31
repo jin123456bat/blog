@@ -11,6 +11,8 @@ use framework\vendor\csrf;
 <link rel="stylesheet" href="<?=assets::css('front/main.css')?>" type="text/css" media="all" />
 <link rel="stylesheet" href="<?=assets::css('front/index/index.css')?>" type="text/css" media="all" />
 <link rel="stylesheet" href="<?=assets::css('iconfont.css')?>" type="text/css" media="all" />
+<link href="<?=assets::path('ckeditor/plugins/codesnippet/lib/highlight/styles/default.css')?>" rel="stylesheet"/>
+<link href="<?=assets::path('ckeditor/style.css')?>" rel="stylesheet"/>
 </head>
 <body>
 
@@ -42,7 +44,7 @@ use framework\vendor\csrf;
 				
 			</div>
 			<div class="content">
-				<?=$a['content']?>
+				<?=$a['summary']?>
 			</div>
 			<div class="read-more">
 				<a href="<?=http::url('article','index',array('id'=>$a['id']))?>">阅读全文</a>
@@ -59,5 +61,7 @@ use framework\vendor\csrf;
 </div>
 
 <?php include_once FRONT.'common/footer.php';?>
+<script type="text/javascript" charset="utf-8" src="<?=assets::path('ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js')?>"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

@@ -1,63 +1,44 @@
-(function () {
+CKEDITOR.plugins.add('pretext', {
+	icons : 'pretext',
 
- b = 'pretext';
+	init : function(editor) {
+		editor.addCommand( 'pretext', {
+		    exec: function( editor ) {
+//		    	var selection = editor.getSelection();
+//		    	console.log(selection);
+//		    	console.log(selection.getSelectedElement());
+		    	/*var element = selection.getStartElement();
+		    	console.log(element);*/
+		    	//editor.insertHtml
+		    	//var selection = editor.getSelectedHtml(true);
+		    	//console.log(selection)
+		    	
+		    	/*var range = new CKEDITOR.dom.range( editor.document );
+		    	range.selectNodeContents( editor.document.getBody() );
+		    	console.log(range);*/
+		    	var selection = editor.extractSelectedHtml(true,true);
+		    	if(selection.length>0)
+		    	{
+		    		//去掉内部的pre标签
+		    		selection = '<pre class="pre">'+selection+'</pre>';
+		    		console.log(selection);
+			    	editor.insertHtml(selection,'unfiltered_html');
+			    }
+		    }
+		});
+		/*
+		editor.widgets.add('pretext', {
+			// Widget code.
+			button : '文本域'
+		});		
+		*/
+		editor.ui.addButton( 'Pretext', {
+            label: '文本域',
+            command: 'pretext',
+            toolbar: 'pretext'
+        });
+		
+	}
+});
 
- CKEDITOR.plugins.add(b, {
 
-       requires: ['styles', 'button'],
-
-       init: function (a) {
-
-               a.addCommand(b, CKEDITOR.plugins.autoformat.commands.autoformat);
-
-               a.ui.addButton('pretext', {
-
-                      label: "文本域",
-
-                      command: 'pretext',
-
-                      icon: this.path + "pretext.jpg"
-
-          });
-
-       }
-
- });
-
- CKEDITOR.plugins.autoformat = {
-
-     commands: {
-
-          autoformat: {
-
-                exec: function (editor) {
-
-                     formatText(editor);
-
-               }
-
-         }
-
-    }
-
-}；
-
-  // 执行的方法
-    function formatText(editor) {
-
-         var myeditor = editor;
-
-          // 得到要编辑的源代码
-          var editorhtml = myeditor.getData();
-         // 在这里执行你的操作。。。。。
-
-      editorhtml= editorhtml.replace(/(<\/?(?!br|p|img|a|h1|h2|h3|h4|h5|h6)[^>\/]*)\/?>/gi,'');     
-        // 在p标签处添加样式，使每个段落自动缩进两个字符
-        editorhtml= editorhtml.replace(/\<[p|P]>/g,"<p style='text-indent: 2em'>");
-
-           // 再将内容放回到编辑器中
-          editor.setData(html);
-
-  }
-
- })();

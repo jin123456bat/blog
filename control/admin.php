@@ -15,7 +15,6 @@ use framework\core\response\message;
 
 class admin extends control
 {
-
 	/**
 	 * 登录
 	 * @return \framework\core\view
@@ -131,6 +130,7 @@ class admin extends control
 				'title' => request::post('title'),
 				'content' => request::post('content'),
 				'publish' => request::post('publish',0,null,'i'),
+				'summary' => request::post('summary'),
 			);
 			$article = new article($data);
 			if ($article->validate())

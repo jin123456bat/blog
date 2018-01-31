@@ -56,12 +56,15 @@ use framework\vendor\csrf;
 								<label>分类</label>
 								<div id="category_select">
 									<select style="display: none" multiple class="form-control" name="category[]" id="category" multiple placeholder="请选择分类">
-								<?php foreach ($category as $cate){?>
-								<option value="<?=$cate['id']?>" <?=in_array($cate['id'], explode(',', $article['article_category']))?'selected':''?>><?=$cate['name']?></option>
-								<?php }?>
-							</select>
+										<?php foreach ($category as $cate){?>
+										<option value="<?=$cate['id']?>" <?=in_array($cate['id'], explode(',', $article['article_category']))?'selected':''?>><?=$cate['name']?></option>
+										<?php }?>
+									</select>
 								</div>
-								<label>标签:</label> <input class="form-control" name="tags" id="tags" value="<?=htmlspecialchars(json_encode(array_unique(array_filter(explode(',', $article['tags']))),JSON_UNESCAPED_UNICODE))?>">
+								<label>标签:</label>
+								<input class="form-control" name="tags" id="tags" value="<?=htmlspecialchars(json_encode(array_unique(array_filter(explode(',', $article['tags']))),JSON_UNESCAPED_UNICODE))?>">
+								<label>摘要:</label>
+								<textarea id="summary" name="summary"><?=$article['summary']?></textarea>
 							</div>
 						</div>
 						<div class="line"></div>
@@ -85,26 +88,70 @@ use framework\vendor\csrf;
 <script type="text/javascript" src="<?=assets::js('jquery')?>"></script>
 	<script type="text/javascript" src="<?=assets::js('global.js')?>"></script>
 	<script type="text/javascript" src="<?=assets::path('ckeditor/ckeditor.js')?>"></script>
+	<script type="text/javascript" src="<?=assets::path('ckfinder/ckfinder.js')?>"></script>
 	<script type="text/javascript" src="<?=assets::js('jquery.tags.js')?>"></script>
 	<script type="text/javascript" src="<?=assets::js('jquery.dropdown.js')?>"></script>
-	<script type="text/javascript" src="<?=assets::js('jquery-validate')?>" charset="utf-8"></script>
 	<script type="text/javascript">
-	CKEDITOR.editorConfig = function( config ) {
-		config.language = 'zh-cn';
-		config.uiColor = '#F7B42C';
-		config.height = 1600;
-		config.toolbarCanCollapse = true;
-		config.toolbar_temp = [
-			 { name: 'document', items: ['code','pretext', 'Save'] },
-		],
-		config.toolbar_Full = [
-			  { name: 'document', items: ['code', 'Source','-','pretext','-', 'Save', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates'] },        
-		]
-	};
-	CKEDITOR.replace( 'content' ,{
-		fullPage: true,
-        extraPlugins: 'pretext',
+	var editor = CKEDITOR.replace( 'content' ,{
+		// 是否使用完整的html编辑模式 如使用，其源码将包含：<html><body></body></html>等标签  
+		fullPage: false,
+		// 界面语言，默认为 'en'
+		language:'zh-cn',
+		// 编辑器样式，有三种：'kama'（默认）、'office2003'、'v2' 
+		//skin:'v2',
+		toolbar:'full',
+		toolbar_full: 
+			[  
+			    { name: 'document', items : [ 'Source' ] },  
+			    { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },  
+			    { name: 'editing', items : [ 'Find','Replace'] },  
+			    { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },  
+			    { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CodeSnippet','Templates',  
+			    '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'] },  
+			    { name: 'links', items : [ 'Link','Unlink','Anchor' ] },  
+			    { name: 'insert', items : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },  
+			    { name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },  
+			    { name: 'colors', items : [ 'TextColor','BGColor' ] },  
+			    { name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }  
+			],
+		extraPlugins: 'codesnippet,autogrow',
+		codeSnippet_theme: 'default',
+        autoGrow_minHeight:200,
+		autoGrow_maxHeight:600,
+		autoGrow_bottomSpace:50,
 	});
+	CKFinder.setupCKEditor(editor, '<?=assets::path('ckfinder')?>');
+
+	var editor = CKEDITOR.replace( 'summary' ,{
+		// 是否使用完整的html编辑模式 如使用，其源码将包含：<html><body></body></html>等标签  
+		fullPage: false,
+		// 界面语言，默认为 'en'
+		language:'zh-cn',
+		// 编辑器样式，有三种：'kama'（默认）、'office2003'、'v2' 
+		//skin:'v2',
+		toolbar:'full',
+		toolbar_full: 
+			[  
+			    { name: 'document', items : [ 'Source' ] },  
+			    { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },  
+			    { name: 'editing', items : [ 'Find','Replace'] },  
+			    { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },  
+			    { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CodeSnippet','Templates',  
+			    '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'] },  
+			    { name: 'links', items : [ 'Link','Unlink','Anchor' ] },  
+			    { name: 'insert', items : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },  
+			    { name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },  
+			    { name: 'colors', items : [ 'TextColor','BGColor' ] },  
+			    { name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }  
+			],
+		extraPlugins: 'codesnippet,autogrow',
+		codeSnippet_theme: 'default',
+        autoGrow_minHeight:200,
+		autoGrow_maxHeight:200,
+		autoGrow_bottomSpace:50,
+	});
+	CKFinder.setupCKEditor(editor, '<?=assets::path('ckfinder')?>');
+	
 
 	$('#tags').tags({
 		class:'form-control',

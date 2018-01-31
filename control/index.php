@@ -27,7 +27,10 @@ class index extends control
 				'aid' => $a['id']
 			))->count();
 			
-			$a['content'] = article::getDescription($a['content']);
+			if (empty($a['summary']))
+			{
+				$a['summary'] = article::getSummary($a['content']);
+			}
 		}
 		
 		$view = new view('index/index.php');
