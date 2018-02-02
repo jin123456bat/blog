@@ -129,8 +129,11 @@ class admin extends control
 				'id' => request::post('id'),
 				'title' => request::post('title'),
 				'content' => request::post('content'),
-				'publish' => request::post('publish',0,null,'i'),
+				'publish' => request::post('publish',0),
 				'summary' => request::post('summary'),
+				
+				'tags' => request::post('tags','[]'),
+				'category' => request::post('category',array(),null,'a'),
 			);
 			$article = new article($data);
 			if ($article->validate())
@@ -345,6 +348,40 @@ class admin extends control
 		$view = new view('admin/article_list.php','backend');
 		return $view;
 	}
+	
+	/**
+	 * 分类页
+	 * @return \framework\core\view
+	 */
+	function category()
+	{
+		$category = $this->model('category')->where(array(
+			'parent_id' => NULL,
+		))->order('sort','asc')->select('id,name');
+		$view = new view('admin/category.php','backend');
+		$view->assign('category', $category);
+		return $view;
+	}
+	
+	function setting_article()
+	{
+		if (request::method() == 'post')
+		{
+			$post = request::post();
+			foreach ($post as $k => $v)
+			{
+				$this->model('setting')->where(array(
+					'skey' => $k,
+				))->limit(1)->update('value',$v);
+			}
+			return new url('admin','setting_article');
+		}
+		else
+		{
+			$view = new view('admin/setting_article.php','backend');
+			return $view;
+		}
+	}
 
 	function __access()
 	{
@@ -358,6 +395,7 @@ class admin extends control
 					'article_list',
 					'article_delete',
 					'index',
+					'category'
 				),
 				'express' => empty(webUser::getLastVerified()),
 				'message' => new url('admin','login'),
@@ -378,6 +416,7 @@ class admin extends control
 				'actions' => array(
 					'article_create',
 					'article_edit',
+					'article_setting',
 				),
 				'express' => request::method() == 'post' && !csrf::verify(request::post(csrf::$_X_CSRF_TOKEN_NAME)),
 				'message' => new response('请重新提交请求',403),

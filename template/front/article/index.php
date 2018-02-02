@@ -46,6 +46,11 @@ use framework\core\http;
 					<?=$article['content']?>
 				</div>
 			</div>
+			<div class="item">
+				<div class="article_footer">
+					<?=$setting['article_footer']?>
+				</div>
+			</div>
 		</div>
 	<?php include_once FRONT.'common/sidebar.php';?>
 </div>

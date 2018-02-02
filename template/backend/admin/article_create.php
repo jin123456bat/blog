@@ -45,7 +45,7 @@ use framework\vendor\csrf;
 						<h4 class="panel-title">文章内容</h4>
 					</div>
 					<div class="panel-body">
-						<script id="content" name="content" type="text/plain"></script>
+						<textarea id="content" name="content"></textarea>
 						<label id="content-error" class="error" for="title"></label>
 					</div>
 				</div>
@@ -64,6 +64,8 @@ use framework\vendor\csrf;
 						</div>
 						<label>标签:</label>
 						<input class="form-control" name="tags" id="tags">
+						<label>摘要:</label>
+						<textarea id="summary" name="summary"></textarea>
 					</div>
 				</div>
 				<div class="line"></div>
@@ -83,13 +85,71 @@ use framework\vendor\csrf;
 <?php include_once BACKEND.'common/footer.php';?>
 <script type="text/javascript" src="<?=assets::js('jquery')?>"></script>
 <script type="text/javascript" src="<?=assets::js('global.js')?>"></script>
-<script type="text/javascript" src="<?=assets::js('ueditor.config.js')?>"></script>
-<script type="text/javascript" src="<?=assets::js('ueditor.all.js')?>"></script>
+<script type="text/javascript" src="<?=assets::path('ckeditor/ckeditor.js')?>"></script>
+<script type="text/javascript" src="<?=assets::path('ckfinder/ckfinder.js')?>"></script>
 <script type="text/javascript" src="<?=assets::js('jquery.tags.js')?>"></script>
 <script type="text/javascript" src="<?=assets::js('jquery.dropdown.js')?>"></script>
-<script type="text/javascript" src="<?=assets::js('jquery-validate')?>" charset="utf-8"></script>
 <script type="text/javascript">
-	var ueditor = UE.getEditor('content');
+	var editor = CKEDITOR.replace( 'content' ,{
+		// 是否使用完整的html编辑模式 如使用，其源码将包含：<html><body></body></html>等标签  
+		fullPage: false,
+		// 界面语言，默认为 'en'
+		language:'zh-cn',
+		// 编辑器样式，有三种：'kama'（默认）、'office2003'、'v2' 
+		//skin:'v2',
+		toolbar:'full',
+		toolbar_full: 
+			[  
+			    { name: 'document', items : [ 'Source' ] },  
+			    { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },  
+			    { name: 'editing', items : [ 'Find','Replace'] },  
+			    { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },  
+			    { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CodeSnippet','Templates',  
+			    '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'] },  
+			    { name: 'links', items : [ 'Link','Unlink','Anchor' ] },  
+			    { name: 'insert', items : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },  
+			    { name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },  
+			    { name: 'colors', items : [ 'TextColor','BGColor' ] },  
+			    { name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }  
+			],
+		extraPlugins: 'codesnippet,autogrow',
+		codeSnippet_theme: 'default',
+	    autoGrow_minHeight:200,
+		autoGrow_maxHeight:600,
+		autoGrow_bottomSpace:50,
+	});
+	CKFinder.setupCKEditor(editor, '<?=assets::path('ckfinder')?>');
+	
+	var editor = CKEDITOR.replace( 'summary' ,{
+		// 是否使用完整的html编辑模式 如使用，其源码将包含：<html><body></body></html>等标签  
+		fullPage: false,
+		// 界面语言，默认为 'en'
+		language:'zh-cn',
+		// 编辑器样式，有三种：'kama'（默认）、'office2003'、'v2' 
+		//skin:'v2',
+		toolbar:'full',
+		toolbar_full: 
+			[  
+			    { name: 'document', items : [ 'Source' ] },  
+			    { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },  
+			    { name: 'editing', items : [ 'Find','Replace'] },  
+			    { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },  
+			    { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CodeSnippet','Templates',  
+			    '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'] },  
+			    { name: 'links', items : [ 'Link','Unlink','Anchor' ] },  
+			    { name: 'insert', items : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },  
+			    { name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },  
+			    { name: 'colors', items : [ 'TextColor','BGColor' ] },  
+			    { name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }  
+			],
+		extraPlugins: 'codesnippet,autogrow',
+		codeSnippet_theme: 'default',
+	    autoGrow_minHeight:200,
+		autoGrow_maxHeight:200,
+		autoGrow_bottomSpace:50,
+	});
+	CKFinder.setupCKEditor(editor, '<?=assets::path('ckfinder')?>');
+
 	$('#tags').tags({
 		class:'form-control',
 		seperator:[',','，',';','；','Enter',' '],
@@ -115,7 +175,7 @@ use framework\vendor\csrf;
     		$('#title-error').html('');
     	}
 
-    	var content = ueditor.getContent();
+    	var content = CKEDITOR.instances.content.getData();
     	if(content.length == 0)
     	{
         	$('#content-error').html('请填写文章内容');

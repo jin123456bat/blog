@@ -16,9 +16,7 @@ jQuery.fn.extend({
 			display:'inline-block',
 		});
 		
-		tpl.insertAfter($(this).css('display','none')).append(input);
-		
-		var old_input = $(this).on('addValue',function(event,value){
+		var old_input = $(this).css('display','none').on('addValue',function(event,value){
 			val = $(this).val();
 			if(val == '' || val.length == 0)
 			{
@@ -39,6 +37,8 @@ jQuery.fn.extend({
 			val.splice($.inArray(value,val),1);
 			$(this).val(JSON.stringify(val));
 		});
+		
+		tpl.insertAfter(old_input).append(input);
 		
 		var max_input_width = input.width();
 		

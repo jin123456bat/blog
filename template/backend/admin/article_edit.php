@@ -19,7 +19,6 @@ use framework\vendor\csrf;
 <div class="container">
 	<?php include_once BACKEND.'common/sidebar.php';?>
 	<div class="main">
-
 			<div class="title">
 				<div class="white-block">
 					<div class="wall-block">
@@ -29,7 +28,8 @@ use framework\vendor\csrf;
 			</div>
 			<div class="body">
 				<form action="<?=http::url('admin','article_edit')?>" method="post">
-					<input type="hidden" name="<?=csrf::$_X_CSRF_TOKEN_NAME?>" value="<?=csrf::token()?>"> <input type="hidden" name="id" value="<?=$article['id']?>">
+					<input type="hidden" name="<?=csrf::$_X_CSRF_TOKEN_NAME?>" value="<?=csrf::token()?>"> 
+					<input type="hidden" name="id" value="<?=$article['id']?>">
 					<div class="white-block">
 						<div class="panel center-block" style="width: 50%;">
 							<div class="panel-heading">
@@ -86,12 +86,12 @@ use framework\vendor\csrf;
 
 <?php include_once BACKEND.'common/footer.php';?>
 <script type="text/javascript" src="<?=assets::js('jquery')?>"></script>
-	<script type="text/javascript" src="<?=assets::js('global.js')?>"></script>
-	<script type="text/javascript" src="<?=assets::path('ckeditor/ckeditor.js')?>"></script>
-	<script type="text/javascript" src="<?=assets::path('ckfinder/ckfinder.js')?>"></script>
-	<script type="text/javascript" src="<?=assets::js('jquery.tags.js')?>"></script>
-	<script type="text/javascript" src="<?=assets::js('jquery.dropdown.js')?>"></script>
-	<script type="text/javascript">
+<script type="text/javascript" src="<?=assets::js('global.js')?>"></script>
+<script type="text/javascript" src="<?=assets::path('ckeditor/ckeditor.js')?>"></script>
+<script type="text/javascript" src="<?=assets::path('ckfinder/ckfinder.js')?>"></script>
+<script type="text/javascript" src="<?=assets::js('jquery.tags.js')?>"></script>
+<script type="text/javascript" src="<?=assets::js('jquery.dropdown.js')?>"></script>
+<script type="text/javascript">
 	var editor = CKEDITOR.replace( 'content' ,{
 		// 是否使用完整的html编辑模式 如使用，其源码将包含：<html><body></body></html>等标签  
 		fullPage: false,
@@ -178,7 +178,7 @@ use framework\vendor\csrf;
     		$('#title-error').html('');
     	}
 
-    	var content = ueditor.getContent();
+    	var content = CKEDITOR.instances.content.getData();
     	if(content.length == 0)
     	{
         	$('#content-error').html('请填写文章内容');

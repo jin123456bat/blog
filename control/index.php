@@ -4,19 +4,46 @@ namespace blog\control;
 use framework\core\control;
 use framework\core\view;
 use blog\entity\article;
+use framework\core\request;
 
 class index extends control
 {
 
 	function index()
 	{
-		$article = $this->model('article')
+		$this->model('article')
 		->where(array(
 			'publish'=>1,
 			'isdelete'=>0,
-		))
-		->order('article.sort','asc')
-		->select();
+		));
+		
+		$date = request::get('date');
+		if (!empty($date))
+		{
+			$this->model('article')->between('createtime', $date,date('Y-m-d',strtotime('+1 day',strtotime($date))));
+		}
+		
+		$tag = request::get('tag');
+		if (!empty($tag))
+		{
+			$this->model('article')->where('id in (select distinct aid from tags where content=?)',array($tag));
+		}
+		
+		$category = request::get('category');
+		if (!empty($category))
+		{
+			$this->model('article')->where('id in (select aid from category where cid=?)',array($category));
+		}
+		
+		$keyword = request::get('keyword');
+		if (!empty($keyword))
+		{
+			$this->model('article')->where('title like ?',array($keyword));
+		}
+		
+		
+		
+		$article = $this->model('article')->order('article.sort','asc')->select();
 		
 		foreach ($article as &$a)
 		{

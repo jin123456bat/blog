@@ -47,9 +47,9 @@ use framework\core\application;
 			<a class="item" href="<?=http::url()?>">
 				首页
 			</a>
-			<?php foreach ($category as $c){?>
-			<a class="item" href="<?=http::url('article','list',array('category'=>$c['id']))?>">
-			<?=$c['name']?>
+			<?php foreach ($menus as $menu){?>
+			<a class="item" href="<?=http::url($menu['link'])?>">
+			<?=$menu['name']?>
 			</a>
 			<?php }?>
 		</div>
