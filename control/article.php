@@ -3,12 +3,21 @@ namespace blog\control;
 use framework\core\control;
 use framework\core\view;
 use framework\core\request;
+use blog\extend\webUser;
 
 class article extends control
 {
 	function index()
 	{
 		$id = request::get('id');
+		
+		$this->model('read_history')->insert(array(
+			'uid' => !empty(webUser::getLastVerified())?webUser::getLastVerified()['id']:0,
+			'aid' => $id,
+			'time' => date('Y-m-d H:i:s'),
+			'ip' => request::getIp(),
+			'ua' => request::getUA(),
+		));
 		
 		$article = $this->model('article')->where(array(
 			'id'=>$id,
