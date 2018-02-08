@@ -196,7 +196,7 @@ class admin extends control
 				'uid' => webUser::getLastVerified()['id'],
 				'uname' => webUser::getLastVerified()['username'],
 				'publish' => request::post('publish',0,null,'i'),
-				'summary' => request::post('summary'),
+				'summary' => request::post('summary',''),
 				
 				'tags' => request::post('tags','[]',null,'s'),
 				'category' => request::post('category',array(),null,'a'),

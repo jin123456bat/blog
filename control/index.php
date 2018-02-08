@@ -43,7 +43,7 @@ class index extends control
 		
 		
 		
-		$article = $this->model('article')->order('article.sort','asc')->select();
+		$article = $this->model('article')->order('article.sort','asc')->order('article.createtime','desc')->select();
 		
 		foreach ($article as &$a)
 		{
