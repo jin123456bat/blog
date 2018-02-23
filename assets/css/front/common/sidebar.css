@@ -58,6 +58,9 @@
 	text-decoration: none;
 	color: #666666;
 	border-top: 1px #CCCCCC solid;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
 }
 
 .container .sidebar .item .item-body a:first-child{

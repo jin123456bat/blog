@@ -41,8 +41,6 @@ class index extends control
 			$this->model('article')->where('title like ?',array($keyword));
 		}
 		
-		
-		
 		$article = $this->model('article')->order('article.sort','asc')->order('article.createtime','desc')->select();
 		
 		foreach ($article as &$a)

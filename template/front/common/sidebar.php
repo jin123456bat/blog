@@ -28,7 +28,7 @@ use framework\core\assets;
 			<div class="item-header">最新文章</div>
 			<div class="item-body">
 				<?php foreach ($new as $article){?>
-				<a href="<?=http::url('article','index',array('id'=>$article['id']))?>"><?=$article['title']?></a>
+				<a title="<?=$article['title']?>" href="<?=http::url('article','index',array('id'=>$article['id']))?>"><?=$article['title']?></a>
 				<?php }?>
 			</div>
 		</div>
@@ -48,8 +48,8 @@ use framework\core\assets;
 			<div class="item-body">
 			<?php foreach ($archives as $archive){?>
 			<a href="<?=http::url('index','index',array(
-				'date' => $archive['createtime']
-			))?>"><?=$archive['createtime']?> &nbsp; (<?=$archive['num']?>)</a>
+				'date' => $archive['create_time']
+			))?>"><?=$archive['create_time']?> &nbsp; (<?=$archive['num']?>)</a>
 			<?php }?>
 			</div>
 		</div>

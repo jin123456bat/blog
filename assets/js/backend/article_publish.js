@@ -89,6 +89,9 @@ var publish = datatables({
 			return content;
 		}
 	}],
+	sort:{
+		createtime:'desc',
+	},
 	pagesize:10,
 	onRowLoaded:function(row){
 		

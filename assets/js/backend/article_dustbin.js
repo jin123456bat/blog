@@ -72,6 +72,9 @@ var dustbin = datatables({
 			return content;
 		}
 	}],
+	sort:{
+		deletetime:'desc',
+	},
 	pagesize:10,
 	onRowLoaded:function(row){
 		

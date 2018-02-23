@@ -18,15 +18,13 @@ class article extends entity
 	 */
 	static function getSummary($content)
 	{
-		//去掉文章中的代码段
-		$pattern = '/<pre class="brush:php[^"]*">[\s\S]*<\/pre>/mUi';
-		$content = preg_replace($pattern, '', $content);
-		
+		$content = strip_tags($content);
 		return mb_strimwidth($content, 0, 1000, '...');
 	}
 	
 	function __preInsert()
 	{
+		//生成文章ID
 		do{
 			$id = encryption::unique_id();
 			$article = $this->model('article')->where(array(
@@ -74,7 +72,7 @@ class article extends entity
 			$this->_data['summary'] = str_replace(array_keys($temp), array_values($temp), $this->_data['summary']);
 		}
 	}
-
+	
 	function __relation($field, $primaryKey, $data)
 	{
 		if ($field == 'category')

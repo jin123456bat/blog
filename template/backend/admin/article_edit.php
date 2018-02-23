@@ -44,7 +44,7 @@ use framework\vendor\csrf;
 								<h4 class="panel-title">文章内容</h4>
 							</div>
 							<div class="panel-body">
-								<textarea id="content" name="content"><?=$article['content']?></textarea>
+								<textarea id="content" name="content"><?=htmlspecialchars($article['content'])?></textarea>
 								<label id="content-error" class="error" for="title"></label>
 							</div>
 						</div>

@@ -26,8 +26,8 @@ class blog extends application
 				
 				//归档
 				$archive = $this->model('article')
-				->group('createtime')->order('createtime','desc')->select(array(
-					'createtime'=>'DATE_FORMAT(createtime,"%Y-%m-%d")',
+				->group('create_time')->order('createtime','desc')->select(array(
+					'create_time'=>'DATE_FORMAT(createtime,"%Y-%m-%d")',
 					'num' => 'count(*)',
 				));
 				$response->assign('archives', $archive);

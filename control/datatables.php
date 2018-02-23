@@ -27,6 +27,12 @@ class datatables extends control
 		$articleModel->keepCondition();
 		$count = $articleModel->count();
 		
+		$sort = request::post('order',array(),null,'a');
+		foreach ($sort as $k => $v)
+		{
+			$articleModel->order($k,$v);
+		}
+		
 		$data = $articleModel->limit($start,$length)->select($select);
 		
 		return new json(array(
