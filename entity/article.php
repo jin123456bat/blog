@@ -5,7 +5,7 @@ use framework\core\entity;
 use framework\vendor\encryption;
 use framework\core\http;
 use framework\vendor\image;
-use framework\core\request;
+use blog\extend\spider;
 
 class article extends entity
 {
@@ -18,12 +18,104 @@ class article extends entity
 	 */
 	static function getSummary($content)
 	{
+		$tags = array(
+			'p',
+			'pre',
+			'code',
+			'div',
+		);
+		
+		$length = 1000;
+		$summary = '';
+		
+		foreach ($tags as $tag)
+		{
+			$pattern = '/<'.$tag.'.*>[\s\S]*<\/'.$tag.'>/iU';
+			preg_match_all($pattern, $content,$match);
+			
+			
+			foreach ($match[0] as $string)
+			{
+				if (mb_strlen($summary,'utf-8') < $length)
+				{
+					$summary .= $string;
+				}
+			}
+		}
+		return $summary;
+		
 		$content = strip_tags($content);
 		return mb_strimwidth($content, 0, 1000, '...');
 	}
 	
+	/**
+	 * 格式化代码
+	 * @param unknown $string
+	 */
+	static function formatCode($string)
+	{
+		$charset = 'utf-8';
+		$pattern = '/<code(?<type>.*)>(?<content>[\s\S]*)<\/code>/iU';
+		
+		return preg_replace_callback($pattern, function($match) use($charset){
+			$type = trim($match['type']);
+			if (!empty($type))
+			{
+				$type = sscanf($type, 'class="language-%s"');
+			}
+			
+			$type = !empty($type)?(' class="language-'.$type[0].'"'):'';
+			
+			$formatter = '\\framework\\vendor\\formatter\\'.$type;
+			if (class_exists($formatter,true))
+			{
+				$class = new $formatter($match['content'],$charset);
+				return '<code'.$type.'>'.$class->getCode().'</code>';
+			}
+			return $match[0];
+		}, $string);
+	}
+	
+	function __afterInsert()
+	{
+		$spider = new spider(http::url('article','index',array(
+			'id' => $this->_data['id'],
+		)));
+		$spider->push();
+	}
+	
+	function __afterRemove()
+	{
+		$spider = new spider(http::url('article','index',array(
+			'id' => $this->_data['id'],
+		)));
+		$spider->delete();
+	}
+	
+	function __afterUpdate()
+	{
+		$spider = new spider(http::url('article','index',array(
+			'id' => $this->_data['id'],
+		)));
+		if ($this->_data['publish']==1 && $this->_data['isdelete']==1)
+		{
+			$spider->update();
+		}
+		else
+		{
+			$spider->delete();
+		}
+	}
+	
+	function __preUpdate()
+	{
+		$this->_data['content'] = self::formatCode($this->_data['content']);
+	}
+	
 	function __preInsert()
 	{
+		$this->_data['content'] = self::formatCode($this->_data['content']);
+		
 		//生成文章ID
 		do{
 			$id = encryption::unique_id();

@@ -1,6 +1,7 @@
 <?php
 use framework\core\assets;
 use framework\core\http;
+use blog\entity\article;
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,7 +44,7 @@ use framework\core\http;
 
 				</div>
 				<div class="content">
-					<?=$article['content']?>
+					<?=article::formatCode($article['content'])?>
 				</div>
 			</div>
 			<div class="item">
