@@ -34,10 +34,4 @@ class article extends control
 		$view->assign('article', $article);
 		return $view;
 	}
-	
-	function content()
-	{
-		$id = request::get('id');
-		return $this->model('article')->where('id=?',array($id))->scalar('content');
-	}
 }

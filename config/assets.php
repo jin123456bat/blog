@@ -4,7 +4,10 @@ return array(
 	'global' => array(
 		'head' => array(
 			'css' => array(),
-			'js' => array()
+			'js' => array(
+				'adsbygoogle',
+				'googleAdsense.js'
+			)
 		),
 		'end' => array(
 			'js' => array(
@@ -26,8 +29,7 @@ return array(
 	'js' => array(
 		//js文件的路径
 		'path' => array(
-			'./assets/js',
-			'./assets/ueditor',
+			'./assets/js'
 		),
 		
 		//映射 可以在这里配置一些cdn之类的   当然映射的优先级要比path的优先级要低
@@ -37,6 +39,8 @@ return array(
 			
 			'tagsinput' => 'https://cdn.bootcss.com/jquery-tagsinput/1.3.6/jquery.tagsinput.min.js',
 			'ckeditor' => 'https://cdn.ckeditor.com/4.8.0/full/ckeditor.js',
+			
+			'adsbygoogle' => '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
 		)
 	),
 	'image' => array(

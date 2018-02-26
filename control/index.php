@@ -32,7 +32,7 @@ class index extends control
 		$category = request::get('category');
 		if (!empty($category))
 		{
-			$this->model('article')->where('id in (select aid from category where cid=?)',array($category));
+			$this->model('article')->where('id in (select aid from article_category where cid=?)',array($category));
 		}
 		
 		$keyword = request::get('keyword');

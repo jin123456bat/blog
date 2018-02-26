@@ -7,6 +7,10 @@ jQuery.fn.extend({
 			tpl.addClass(options.class);
 		}
 		
+		tpl.css({
+			'display':'flex',
+		});
+		
 		var input = $('<input type="text" placeholder="请输入标签">');
 		input.append(tpl).css({
 			width:'100%',
@@ -88,7 +92,16 @@ jQuery.fn.extend({
 		}).on('blur',function(){
 			tpl.removeClass('active');
 		}).on('keydown',function(e){
-			if($.inArray(e.key,options.seperator) != -1)
+			if(e.key == 'Backspace' && $(this).val().length==0)
+			{
+				//删除最后一个标签
+				var removeBtn = tpl.find('div:last a');
+				if(removeBtn)
+				{
+					removeBtn.trigger('click');
+				}
+			}
+			else if($.inArray(e.key,options.seperator) != -1)
 			{
 				value = $(this).val();
 				
@@ -97,43 +110,13 @@ jQuery.fn.extend({
 				{
 					tags = createTags(value);
 					tags.on('remove',function(event,value){
-						input.trigger('length_change',1);
 						old_input.trigger('delValue',value);
 					});
 					old_input.trigger('addValue',value);
 					tags.insertBefore(input);
-					input.trigger('length_change',0);
 				}
 				$(this).val('');
 				return false;
-			}
-		}).on('length_change',function(event,type){
-			var min_length = 0;
-			var prevAll = $(this).prevAll('div');
-			if(prevAll.length == 1 && type==1)
-			{
-				$(this).css({
-					width:max_input_width+'px'
-				});
-			}
-			else
-			{
-				prevAll.each(function(index,value){
-					min_length += $(value).outerWidth(true)+1;
-				});
-				
-				if(min_length < 100)
-				{
-					min_length = 100;
-				}
-				else if(min_length > max_input_width)
-				{
-					min_length = max_input_width;
-				}
-				
-				$(this).css({
-					width:(max_input_width - min_length)+'px'
-				});
 			}
 		});
 		
@@ -147,11 +130,9 @@ jQuery.fn.extend({
 				$.each(old_val,function(index,value){
 					tags = createTags(value);
 					tags.on('remove',function(event,value){
-						input.trigger('length_change',1);
 						old_input.trigger('delValue',value);
 					});
 					tags.insertBefore(input);
-					input.trigger('length_change',0);
 				});
 			}
 		}

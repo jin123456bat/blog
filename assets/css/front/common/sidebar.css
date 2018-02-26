@@ -61,6 +61,7 @@
 	overflow: hidden;
 	text-overflow:ellipsis;
 	white-space: nowrap;
+	padding: 2px 0px;
 }
 
 .container .sidebar .item .item-body a:first-child{

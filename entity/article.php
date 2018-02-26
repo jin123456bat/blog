@@ -25,7 +25,7 @@ class article extends entity
 			'div',
 		);
 		
-		$length = 1000;
+		$length = 500;
 		$summary = '';
 		
 		foreach ($tags as $tag)
