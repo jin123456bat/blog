@@ -4,7 +4,7 @@ use framework\core\http;
 use blog\entity\article;
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="zh-hans">
 <head>
 <meta charset="UTF-8">
 <title><?=$setting['site_title']?> | <?=$setting['site_desc']?></title>
@@ -58,7 +58,7 @@ use blog\entity\article;
 
 
 <?php include_once FRONT.'common/footer.php';?>
-<script type="text/javascript" charset="utf-8" src="<?=assets::path('ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js')?>"></script>
+<script type="text/javascript" src="<?=assets::path('ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js')?>"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

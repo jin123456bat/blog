@@ -14,6 +14,25 @@ use framework\core\assets;
 		</div>
 	</div>
 	<div class="item">
+		<div class="func-sidebar">
+			<div class="item-header">功能</div>
+			<div class="item-body">
+				<?php if (!empty($user)){?>
+				<div class="user">
+					<div class="gravatar"></div>
+					<div class="tools">
+						<div class="pull-down">个人中心</div>
+						<a class="logout">注销</a>
+					</div>
+				</div>
+				<?php }else{?>
+				<a href="<?=http::url('admin','register')?>">注册</a>
+				<a href="<?=http::url('admin','login')?>">登录</a>
+				<?php }?>
+			</div>
+		</div>
+	</div>
+	<div class="item">
 		<div class="new">
 			<div class="item-header">分类</div>
 			<div class="item-body">
@@ -33,15 +52,7 @@ use framework\core\assets;
 			</div>
 		</div>
 	</div>
-	<div class="item">
-		<div class="func-sidebar">
-			<div class="item-header">功能</div>
-			<div class="item-body">
-				<a href="<?=http::url('admin','register')?>">注册</a>
-				<a href="<?=http::url('admin','login')?>">登录</a>
-			</div>
-		</div>
-	</div>
+	
 	<div class="item">
 		<div class="archive-sidebar">
 			<div class="item-header">文章归档</div>

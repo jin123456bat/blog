@@ -38,7 +38,7 @@ class index extends control
 		$keyword = request::get('keyword');
 		if (!empty($keyword))
 		{
-			$this->model('article')->where('title like ?',array($keyword));
+			$this->model('article')->where('title like ?',array('%'.$keyword.'%'));
 		}
 		
 		$article = $this->model('article')->order('article.sort','asc')->order('article.createtime','desc')->select();

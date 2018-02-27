@@ -4,7 +4,7 @@ use framework\core\http;
 use framework\vendor\csrf;
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="zh-hans">
 <head>
 <meta charset="UTF-8">
 <title><?=$setting['site_title']?> | <?=$setting['site_desc']?></title>
