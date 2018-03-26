@@ -4,9 +4,23 @@ use framework\core\control;
 use framework\core\view;
 use framework\core\http;
 
-class backend extends control
+class sitemap extends control
 {
-	function google_sitemap()
+	function rss()
+	{
+		$view = new view('rss.php','sitemap');
+		
+		$article = $this->model('article')->where(array(
+			'publish' => 1,
+			'isdelete'=> 0,
+		))->select();
+		
+		$view->assign('article', $article);
+		
+		return $view;
+	}
+	
+	function google()
 	{
 		$view = new view('google.php','sitemap');
 		

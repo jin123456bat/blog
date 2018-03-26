@@ -8,7 +8,7 @@ class media extends control
 {
 	function add()
 	{
-		if(request::post('ckCsrfToken') == cookie::get('ckCsrfToken'))
+		if(request::post('ckCsrfToken','','s') == cookie::get('ckCsrfToken'))
 		{
 			$file = request::file('upload');
 			$file = $file->move(APP_ROOT.'/upload/'.date('Y/m/d/'));

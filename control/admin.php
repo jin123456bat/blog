@@ -28,8 +28,8 @@ class admin extends control
 		}
 		else if (request::method() == 'post')
 		{
-			$username = request::post('username');
-			$password = request::post('password');
+			$username = request::post('username','','s');
+			$password = request::post('password','','s');
 			
 			$remember = request::post('remember','false');
 			$remember = ($remember == 'true')?true:false;
@@ -75,9 +75,9 @@ class admin extends control
 	{
 		if (request::method() == 'post')
 		{
-			$username = request::post('username');
-			$password = request::post('password');
-			$email = request::post('email');
+			$username = request::post('username','','s');
+			$password = request::post('password','','s');
+			$email = request::post('email','','s');
 			
 			$message = '';
 			if(webUser::register(array(
@@ -126,14 +126,14 @@ class admin extends control
 		if (request::method() == 'post')
 		{
 			$data = array(
-				'id' => request::post('id'),
-				'title' => request::post('title'),
-				'content' => request::post('content'),
-				'publish' => request::post('publish',0),
-				'summary' => request::post('summary'),
+				'id' => request::post('id',0,'i'),
+				'title' => request::post('title','','s'),
+				'content' => request::post('content','','s'),
+				'publish' => request::post('publish',0,'0,1'),
+				'summary' => request::post('summary','','s'),
 				
 				'tags' => request::post('tags','[]'),
-				'category' => request::post('category',array(),null,'a'),
+				'category' => request::post('category',array(),'a'),
 			);
 			$article = new article($data);
 			if ($article->validate())
@@ -191,15 +191,15 @@ class admin extends control
 		if (request::method() == 'post')
 		{
 			$data = array(
-				'title' => request::post('title','',null,'s'),
-				'content' => request::post('content','',null,'s'),
+				'title' => request::post('title','','s'),
+				'content' => request::post('content','','s'),
 				'uid' => webUser::getLastVerified()['id'],
 				'uname' => webUser::getLastVerified()['username'],
-				'publish' => request::post('publish',0,null,'i'),
+				'publish' => request::post('publish',0,'i'),
 				'summary' => request::post('summary',''),
 				
-				'tags' => request::post('tags','[]',null,'s'),
-				'category' => request::post('category',array(),null,'a'),
+				'tags' => request::post('tags','[]','s'),
+				'category' => request::post('category',array(),'a'),
 			);
 			$article = new article($data);
 			if ($article->validate())
@@ -238,7 +238,7 @@ class admin extends control
 	function article_update()
 	{
 		$id = request::post('id');
-		$publish = request::post('publish',null,null,'0,1');
+		$publish = request::post('publish',0,'0,1');
 		
 		if ($publish !== null)
 		{
@@ -260,7 +260,7 @@ class admin extends control
 			}
 		}
 		
-		$delete = request::post('delete',null,null,'1,0');
+		$delete = request::post('delete',1,'1,0');
 		if ($delete !== null)
 		{
 			if($this->model('article')->where(array(
@@ -290,7 +290,7 @@ class admin extends control
 	 */
 	function article_delete()
 	{
-		$id = request::post('id');
+		$id = request::post('id',0,'i');
 		if (is_array($id))
 		{
 			$article = $this->model('article')->where(array(
