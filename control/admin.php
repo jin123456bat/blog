@@ -237,8 +237,8 @@ class admin extends control
 	 */
 	function article_update()
 	{
-		$id = request::post('id');
-		$publish = request::post('publish',0,'0,1');
+		$id = request::post('id','','s');
+		$publish = request::post('publish',null,'0,1');
 		
 		if ($publish !== null)
 		{
@@ -260,7 +260,7 @@ class admin extends control
 			}
 		}
 		
-		$delete = request::post('delete',1,'1,0');
+		$delete = request::post('delete',null,'1,0');
 		if ($delete !== null)
 		{
 			if($this->model('article')->where(array(

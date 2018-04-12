@@ -76,36 +76,36 @@ class article extends entity
 		}, $string);
 	}
 	
-	function __afterInsert()
-	{
-		$spider = new spider(http::url('article','index',array(
-			'id' => $this->_data['id'],
-		)));
-		$spider->push();
-	}
+// 	function __afterInsert()
+// 	{
+// 		$spider = new spider(http::url('article','index',array(
+// 			'id' => $this->_data['id'],
+// 		)));
+// 		$spider->push();
+// 	}
 	
-	function __afterRemove()
-	{
-		$spider = new spider(http::url('article','index',array(
-			'id' => $this->_data['id'],
-		)));
-		$spider->delete();
-	}
+// 	function __afterRemove()
+// 	{
+// 		$spider = new spider(http::url('article','index',array(
+// 			'id' => $this->_data['id'],
+// 		)));
+// 		$spider->delete();
+// 	}
 	
-	function __afterUpdate()
-	{
-		$spider = new spider(http::url('article','index',array(
-			'id' => $this->_data['id'],
-		)));
-		if ($this->_data['publish']==1 && $this->_data['isdelete']==1)
-		{
-			$spider->update();
-		}
-		else
-		{
-			$spider->delete();
-		}
-	}
+// 	function __afterUpdate()
+// 	{
+// 		$spider = new spider(http::url('article','index',array(
+// 			'id' => $this->_data['id'],
+// 		)));
+// 		if ($this->_data['publish']==1 && $this->_data['isdelete']==1)
+// 		{
+// 			$spider->update();
+// 		}
+// 		else
+// 		{
+// 			$spider->delete();
+// 		}
+// 	}
 	
 	function __preUpdate()
 	{
@@ -149,7 +149,6 @@ class article extends entity
 		}
 		
 		$urls = array_unique($urls);
-		
 		$temp = array();
 		foreach ($urls as $url)
 		{

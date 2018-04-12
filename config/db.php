@@ -13,6 +13,6 @@ return array(
 		'dbname' => 'blog',
 		'user' => 'root',
 		'password' => $_SERVER['HTTP_HOST'] == 'localhost'?'':'jin2164389',
-		'charset' => 'utf8'
+		'charset' => 'utf8mb4'
 	)
 );

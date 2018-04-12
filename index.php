@@ -2,7 +2,7 @@
 //echo "服务器监控项目";
 define('ROOT', '..');
 // 调试模式
-define('DEBUG', false);
+define('DEBUG', true);
 
 // 定义框架的目录
 ! defined('SYSTEM_ROOT') & define("SYSTEM_ROOT", ROOT . '/framework');
