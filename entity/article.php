@@ -3,9 +3,6 @@ namespace blog\entity;
 
 use framework\core\entity;
 use framework\vendor\encryption;
-use framework\core\http;
-use framework\vendor\image;
-use blog\extend\spider;
 
 class article extends entity
 {
