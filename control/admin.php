@@ -290,7 +290,7 @@ class admin extends control
 	 */
 	function article_delete()
 	{
-		$id = request::post('id',0,'i');
+		$id = request::post('id');
 		if (is_array($id))
 		{
 			$article = $this->model('article')->where(array(
@@ -317,7 +317,7 @@ class admin extends control
 				'message'=>'删除成功',
 			));
 		}
-		else
+		else if (is_scalar($id))
 		{
 			$article = $this->model('article')->where(array(
 				'id' => $id
